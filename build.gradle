@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'jetty'
 
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.7
 version = '0.1-beta1'
 group = 'org.cghr'
 
@@ -20,7 +20,7 @@ repositories {
     mavenCentral()
 }
 
-String springVersion = '3.2.5.RELEASE'
+String springVersion = '4.1.0.RELEASE'
 
 test {
     systemProperties 'property': 'value'
@@ -42,7 +42,6 @@ check.dependsOn intTest
 dependencies {
     compile "org.springframework:spring-context:$springVersion"
     compile "org.springframework:spring-webmvc:$springVersion"
-    compile "org.springframework:spring-jdbc:$springVersion"
     compile 'com.google.code.gson:gson:2.2.4'
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
     compile 'org.codehaus.groovy:groovy-all:2.2.0'
@@ -50,7 +49,10 @@ dependencies {
     compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
     compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     compile 'log4j:log4j:1.2.17'
-    compile 'org.firebirdsql.jdbc:jaybird:2.1.6'
+    compile 'com.github.jknack:handlebars:1.3.0'
+
+    //compile 'org.firebirdsql.jdbc:jaybird:2.1.6'
+    compile 'net.sourceforge.jtds:jtds:1.3.1'
     testCompile 'org.spockframework:spock-unitils:0.7-groovy-2.0'
     testCompile 'cglib:cglib-nodep:3.1'
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
