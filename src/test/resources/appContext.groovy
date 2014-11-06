@@ -20,7 +20,7 @@ beans {
 
     Map labels = [actual: "0138420", predicted: "0138460", type: "0188470"]
     List testParams = ["FVC", "FEV1", "FEV6", "PEF"]
-    gdtReader(GDTReader,"C:/ProgramData/Vitalograph/Spirotrac V/EDV1LUFU.046",labels,testParams)
+    gdtReader(GDTReader,"C:/ProgramData/Vitalograph/Spirotrac V/EDV1LUFU.046",labels,testParams,false)
 
 
 
