@@ -1,11 +1,37 @@
 apply plugin: 'groovy'
 apply plugin: 'war'
 apply plugin: 'maven'
-apply plugin: 'jetty'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath(group: 'com.sahlbach.gradle', name: 'gradle-jetty-eclipse-plugin', version: '1.9.+')
+    }
+}
+apply plugin: 'jettyEclipse'
+
+//buildscript {
+//    repositories {
+//        mavenCentral()
+//
+//    }
+//    dependencies {
+//        classpath "net.saliman:gradle-cobertura-plugin:2.2.3"
+//        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:0.4.0'
+//    }
+//}
+//apply plugin: 'cobertura'
+//apply plugin: 'coveralls'
+//
+//cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
+//cobertura.coverageSourceDirs = sourceSets.main.groovy.srcDirs
 
 sourceCompatibility = 1.7
-version = '0.1-beta1'
+targetCompatibility = 1.7
+
+version = '0.1-rc2'
 group = 'org.cghr'
 
 jar {
@@ -18,6 +44,7 @@ jar {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 String springVersion = '4.1.0.RELEASE'
@@ -25,8 +52,10 @@ String springVersion = '4.1.0.RELEASE'
 test {
     systemProperties 'property': 'value'
     include 'src/integrationTest'
+    include "**/*Spec.class"
 
 }
+
 
 sourceSets {
     integrationTest
@@ -37,35 +66,41 @@ task intTest(type: Test) {
     classpath = sourceSets.integrationTest.runtimeClasspath
 
 }
+configurations {
+    provided
+    provided.extendsFrom(compile)
+}
 assemble.dependsOn clean
 check.dependsOn intTest
 dependencies {
-    compile "org.springframework:spring-context:$springVersion"
-    compile "org.springframework:spring-webmvc:$springVersion"
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
-    compile 'org.codehaus.groovy:groovy-all:2.2.0'
-    compile 'javax.servlet:servlet-api:2.5'
-    compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
-    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
-    compile 'log4j:log4j:1.2.17'
-    compile 'com.github.jknack:handlebars:1.3.0'
 
-    //compile 'org.firebirdsql.jdbc:jaybird:2.1.6'
-    compile 'net.sourceforge.jtds:jtds:1.3.1'
+    compile 'org.cghr:cghr-services:0.1-rc2'
+    compile 'com.github.jknack:handlebars:1.3.0'
+//    compile "org.springframework:spring-webmvc:$springVersion"
+//    compile 'com.google.code.gson:gson:2.2.4'
+//    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+//    compile 'org.codehaus.groovy:groovy-all:2.3.2'
+//    compile 'javax.servlet:javax.servlet-api:3.0.1'
+//    compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
+//    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+//    compile 'org.awake-file:awake-file:1.3'
+//    compile 'log4j:log4j:1.2.17'
+//    compile 'org.apache.tomcat:tomcat-jdbc:8.0.5'
+
+    testCompile 'com.h2database:h2:1.4.177'
     testCompile 'org.spockframework:spock-unitils:0.7-groovy-2.0'
+    testCompile 'org.spockframework:spock-spring:0.7-groovy-2.0'
+    testCompile "org.springframework:spring-test:$springVersion"
     testCompile 'cglib:cglib-nodep:3.1'
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
-    testCompile group: 'junit', name: 'junit', version: '4.+'
-    testCompile "org.springframework:spring-test:$springVersion"
-    testCompile 'org.spockframework:spock-spring:0.7-groovy-2.0'
-    testCompile 'com.h2database:h2:1.3.174'
     testCompile 'org.objenesis:objenesis:2.1'
     testCompile 'com.github.tomakehurst:wiremock:1.36'
     testCompile 'org.slf4j:slf4j-api:1.7.5'
 
     integrationTestCompile configurations.testCompile + sourceSets.main.output + sourceSets.test.output
     integrationTestRuntime configurations.testRuntime
+
+    runtime 'ch.qos.logback:logback-classic:1.1.2'
 
 }
 
@@ -79,4 +114,3 @@ uploadArchives {
         }
     }
 }
-

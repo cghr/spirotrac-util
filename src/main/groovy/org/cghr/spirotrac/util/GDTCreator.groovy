@@ -15,15 +15,40 @@ class GDTCreator {
     String gdtTemplateFilePath
     Handlebars handlebars
     int constantToSentenceLength
-    String filename
+    String gdtFilename
+    String outputGDTFilename
 
 
     void createGDTFile(Map context) {
 
         Template template = handlebars.compile(gdtTemplateFilePath)
-        String gdtData = StringEscapeUtils.unescapeHtml4(template.apply(context))
+        String gdtData = StringEscapeUtils.unescapeHtml4(template.apply(transformData(context)))
         String output = gdtData.replaceAll("LLL", gdtData.size() + constantToSentenceLength + "")
-        new File(gdtDirectoryPath + filename).setText(output)
+        new File(gdtDirectoryPath + gdtFilename).setText(output)
+    }
+
+    String getOutputGDTData() {
+
+        new File(gdtDirectoryPath + outputGDTFilename).text
+    }
+
+    Map transformData(Map data) {
+
+        [pid   : data.pid,
+         dob   : data.dob.replaceAll("-", ""),
+         height: transformHeightOrWeight(data.height.toInteger()),
+         weight: transformHeightOrWeight(data.weight.toInteger()),
+         gender: transformGender(data.gender)
+        ]
+
+    }
+
+    String transformHeightOrWeight(Integer value) {
+        value < 100 ? ('0' + value) : value
+    }
+
+    String transformGender(String gender) {
+        gender == 'Male' ? '01' : '02'
     }
 
 
