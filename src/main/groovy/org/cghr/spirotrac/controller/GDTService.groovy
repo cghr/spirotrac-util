@@ -2,6 +2,7 @@ package org.cghr.spirotrac.controller
 
 import com.google.gson.Gson
 import org.cghr.spirotrac.util.GDTCreator
+import org.cghr.spirotrac.util.GDTReader
 import org.cghr.spirotrac.util.SpirotracUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,6 +20,8 @@ class GDTService {
     @Autowired
     GDTCreator gdtCreator
     @Autowired
+    GDTReader gdtReader
+    @Autowired
     SpirotracUtil spirotracUtil
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
@@ -33,7 +36,7 @@ class GDTService {
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     String getGDTData() {
 
-        gdtCreator.getOutputGDTData()
+        gdtReader.getGDTData()
 
     }
 
