@@ -24,3 +24,7 @@ Tasks done by Spirotrac Software:
 * Reads the data created by Spirotrac-util and prepares the application for testing lung function.
 * Once closed,dumps all the data to  a GDT output file which can be read by third-party softwares.
 
+API Specification for accessing Spirotrac:
+==========================================
+
+![](https://github.com/cghr/spirotrac-util/blob/master/images/spirotrac.png)
